@@ -3,11 +3,11 @@
 
 [build]
   base = "apps/web"
-  command = "cd ../.. && npm install --legacy-peer-deps && cd apps/web && npm run build"
+  command = "cd ../.. && npm install --legacy-peer-deps && npm install --workspace=apps/web --legacy-peer-deps && cd apps/web && npm run build"
   publish = "build/client"
 
 [build.environment]
-  NODE_VERSION = "22.0.0"
+  NODE_VERSION = "22.11.0"
   NPM_FLAGS = "--legacy-peer-deps"
 
 # API proxy to serverless functions
