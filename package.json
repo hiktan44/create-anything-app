@@ -10,8 +10,12 @@
     "start": "cd apps/web && npm run start"
   },
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
+  "overrides": {
+    "p-map": "4.0.0"
+  },
   "engines": {
     "node": ">=18.0.0"
   }
