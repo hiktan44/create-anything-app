@@ -3,7 +3,7 @@
 
 [build]
   base = "apps/web"
-  command = "cd ../.. && npm install --legacy-peer-deps && npm install --workspace=apps/web --legacy-peer-deps && cd apps/web && npm run build"
+  command = "cd ../.. && npm ci && cd apps/web && npm run build"
   publish = "build/client"
 
 [build.environment]
