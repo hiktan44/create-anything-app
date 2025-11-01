@@ -10,10 +10,6 @@
   NODE_VERSION = "20.11.0"
   NPM_FLAGS = "--legacy-peer-deps"
 
-# Ignore mobile app during build
-[build.ignore]
-  paths = ["apps/mobile/**"]
-
 # API proxy to serverless functions
 [[redirects]]
   from = "/api/*"
