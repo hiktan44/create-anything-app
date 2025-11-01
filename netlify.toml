@@ -4,7 +4,17 @@
   publish = "build/client"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20.11.0"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+# Ignore mobile app during build
+[build.ignore]
+  paths = ["apps/mobile/**"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 [[redirects]]
   from = "/*"
