@@ -2,9 +2,9 @@
 # Production deployment settings
 
 [build]
-  base = "apps/web"
-  command = "cd ../.. && npm ci && cd apps/web && npm run build"
-  publish = "build/client"
+  base = "."
+  command = "npm ci && npm run build --workspace=apps/web"
+  publish = "apps/web/build/client"
 
 [build.environment]
   NODE_VERSION = "22.11.0"
