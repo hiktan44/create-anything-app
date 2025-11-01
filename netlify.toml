@@ -3,12 +3,11 @@
 
 [build]
   base = "apps/web"
-  command = "npm run build"
+  command = "npm install --legacy-peer-deps && npm run build"
   publish = "build/client"
 
 [build.environment]
   NODE_VERSION = "20.11.0"
-  NPM_FLAGS = "--legacy-peer-deps"
 
 # API proxy to serverless functions
 [[redirects]]
