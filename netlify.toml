@@ -25,3 +25,7 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Netlify site info (auto-generated)
+[siteInfo]
+  id = "2e074e7f-0695-4b40-97fc-6c25e142d674"
