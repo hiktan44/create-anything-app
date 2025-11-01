@@ -1,3 +1,6 @@
+# Create Anything App - Netlify Configuration
+# Production deployment settings
+
 [build]
   base = "apps/web"
   command = "npm run build"
@@ -11,11 +14,13 @@
 [build.ignore]
   paths = ["apps/mobile/**"]
 
+# API proxy to serverless functions
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
 
+# SPA fallback - all routes to index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
