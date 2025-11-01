@@ -56,3 +56,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+#Ignore cursor AI rules
+.cursor/rules/codacy.mdc

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "TC001",
+    "title": "verify jwt token issuance and user info retrieval",
+    "description": "Test the /api/auth/token GET endpoint to ensure it successfully issues a JWT token and returns correct user information for authenticated users, and returns 401 Unauthorized for unauthenticated requests."
+  },
+  {
+    "id": "TC002",
+    "title": "validate product creation with complete and valid data",
+    "description": "Test the /api/products POST endpoint to create a new product with all required fields including company_id, product_name, hs_code, category, material, technical_specs, unit_price, currency, and description, and verify the product is created successfully."
+  },
+  {
+    "id": "TC003",
+    "title": "fetch products by valid company id",
+    "description": "Test the /api/products GET endpoint with a valid company_id query parameter to retrieve the list of products associated with that company, and verify the response contains the products array."
+  },
+  {
+    "id": "TC004",
+    "title": "retrieve ai predictions with valid parameters",
+    "description": "Test the /api/ai-predictions GET endpoint by providing valid company_id, type (market_forecast, price_trend, demand_prediction), and period parameters, and verify the response returns the expected AI prediction data."
+  },
+  {
+    "id": "TC005",
+    "title": "create ai prediction with required fields",
+    "description": "Test the /api/ai-predictions POST endpoint to create a new AI prediction by providing required fields company_id, prediction_type, and period, along with optional fields, and verify the prediction is created successfully."
+  },
+  {
+    "id": "TC006",
+    "title": "get market reports for a company",
+    "description": "Test the /api/market-reports GET endpoint with a valid company_id query parameter to retrieve market reports and verify the response contains relevant trade statistics and market insights."
+  },
+  {
+    "id": "TC007",
+    "title": "fetch target markets successfully",
+    "description": "Test the /api/target-markets GET endpoint to retrieve the list of target markets and verify the response returns success with the expected data."
+  },
+  {
+    "id": "TC008",
+    "title": "retrieve risk assessments",
+    "description": "Test the /api/risk-assessment GET endpoint to fetch trade risk analysis and assessment data and verify the response is successful and contains the expected information."
+  },
+  {
+    "id": "TC009",
+    "title": "get price optimization recommendations",
+    "description": "Test the /api/price-optimization GET endpoint to retrieve pricing strategy optimization recommendations for export markets and verify the response returns success with relevant data."
+  },
+  {
+    "id": "TC010",
+    "title": "fetch market trends data",
+    "description": "Test the /api/trend-detection GET endpoint to retrieve market trend identification and analysis data and verify the response returns success with the expected trend information."
+  }
+]

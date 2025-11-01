@@ -18,7 +18,8 @@ const KeyboardAvoidingAnimatedView = (props, ref) => {
     ...leftoverProps
   } = props;
 
-  const animatedViewRef = useRef(null); // ref to animated view in this polyfill
+  const animatedViewRef = useRef(null); // ref to the native view for measurements
+  const layoutDataRef = useRef(null); // store layout data (relative coordinates)
   const initialHeightRef = useRef(0); // original height of animated view before keyboard appears
   const bottomRef = useRef(0); // current bottom offset value of animated view
   const bottomHeight = useSharedValue(0); // whats going to be added to the bottom when keyboard appears
@@ -28,20 +29,23 @@ const KeyboardAvoidingAnimatedView = (props, ref) => {
 
     const onKeyboardShow = (event) => {
       const { duration, endCoordinates } = event;
-      const animatedView = animatedViewRef.current;
+      const viewRef = animatedViewRef.current;
+      const layoutData = layoutDataRef.current;
 
-      if (!animatedView) return;
+      if (!viewRef || !layoutData) return;
 
-      let height = 0;
+      // Use measureInWindow to get absolute screen coordinates
+      viewRef.measureInWindow((x, y, width, height) => {
+        // Calculate how much the view needs to move up
+        const keyboardY = endCoordinates.screenY - keyboardVerticalOffset;
+        const viewBottom = y + height;
+        const overlappingHeight = Math.max(viewBottom - keyboardY, 0);
 
-      // calculate how much the view needs to move up
-      const keyboardY = endCoordinates.screenY - keyboardVerticalOffset;
-      height = Math.max(animatedView.y + animatedView.height - keyboardY, 0);
-
-      bottomHeight.value = withTiming(height, {
-        duration: duration > 10 ? duration : 300,
+        bottomHeight.value = withTiming(overlappingHeight, {
+          duration: duration > 10 ? duration : 300,
+        });
+        bottomRef.current = overlappingHeight;
       });
-      bottomRef.current = height;
     };
 
     const onKeyboardHide = () => {
@@ -49,12 +53,12 @@ const KeyboardAvoidingAnimatedView = (props, ref) => {
       bottomRef.current = 0;
     };
 
-    Keyboard.addListener("keyboardWillShow", onKeyboardShow);
-    Keyboard.addListener("keyboardWillHide", onKeyboardHide);
+    const showListener = Keyboard.addListener("keyboardWillShow", onKeyboardShow);
+    const hideListener = Keyboard.addListener("keyboardWillHide", onKeyboardHide);
 
     return () => {
-      Keyboard.removeAllListeners("keyboardWillShow");
-      Keyboard.removeAllListeners("keyboardWillHide");
+      showListener.remove();
+      hideListener.remove();
     };
   }, [keyboardVerticalOffset, enabled, bottomHeight]);
 
@@ -75,19 +79,32 @@ const KeyboardAvoidingAnimatedView = (props, ref) => {
 
   const positionAnimatedStyle = useAnimatedStyle(() => ({
     bottom: bottomHeight.value,
+    // Add position: 'relative' to ensure bottom property works
+    position: 'relative',
   }));
 
   const handleLayout = (event) => {
     const layout = event.nativeEvent.layout;
-    animatedViewRef.current = layout;
+    layoutDataRef.current = layout;
 
-    // initial height before keybaord appears
+    // Store initial height before keyboard appears
     if (!initialHeightRef.current) {
       initialHeightRef.current = layout.height;
     }
 
     if (onLayout) {
       onLayout(event);
+    }
+  };
+
+  const handleRef = (node) => {
+    // Store the native view reference for measureInWindow
+    animatedViewRef.current = node;
+    // Forward the ref if provided
+    if (typeof ref === 'function') {
+      ref(node);
+    } else if (ref) {
+      ref.current = node;
     }
   };
 
@@ -119,7 +136,7 @@ const KeyboardAvoidingAnimatedView = (props, ref) => {
 
   return (
     <Animated.View
-      ref={ref}
+      ref={handleRef}
       style={[style, animatedStyle]}
       onLayout={handleLayout}
       {...leftoverProps}

@@ -42,7 +42,7 @@ const WEB_ALIASES = {
 const NATIVE_ALIASES = {
   './Libraries/Components/TextInput/TextInput': path.resolve(
     __dirname,
-    './polyfills/native/texinput.native.jsx'
+    './polyfills/native/textinput.native.jsx'
   ),
 };
 const SHARED_ALIASES = {
@@ -109,7 +109,8 @@ config.reporter = {
     for (const errorType of reportableErrors) {
       if (event.type === errorType) {
         reportErrorToRemote({ error: event.error }).catch((reportError) => {
-          // no-op
+          // Log error reporting failures for debugging
+          console.error('[Metro] Failed to report error to remote:', reportError);
         });
       }
     }

@@ -1,0 +1,444 @@
+{
+  "tech_stack": [
+    "JavaScript/TypeScript",
+    "React 19.0.0",
+    "React Native 0.79.3",
+    "Expo 53.0.11",
+    "React Router v7",
+    "Next.js",
+    "Tailwind CSS",
+    "PostgreSQL",
+    "Supabase Auth",
+    "Node.js 18+",
+    "Bun"
+  ],
+  "features": [
+    {
+      "name": "Authentication",
+      "description": "JWT-based authentication system with token management",
+      "files": [
+        "apps/web/src/app/api/auth/token/route.js",
+        "apps/web/src/app/api/auth/change-password/route.js",
+        "apps/web/src/app/api/auth/delete-account/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/auth/token": {
+            "get": {
+              "summary": "Get JWT token and user info",
+              "responses": {
+                "200": {
+                  "description": "Success",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "jwt": { "type": "string" },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "id": { "type": "string" },
+                              "email": { "type": "string" },
+                              "name": { "type": "string" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "401": {
+                  "description": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Products Management",
+      "description": "CRUD operations for company products with HS codes and technical specifications",
+      "files": [
+        "apps/web/src/app/api/products/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/products": {
+            "get": {
+              "summary": "Get products by company ID",
+              "parameters": [
+                {
+                  "name": "company_id",
+                  "in": "query",
+                  "required": true,
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Success",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "products": {
+                            "type": "array",
+                            "items": { "type": "object" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "400": { "description": "Company ID required" }
+              }
+            },
+            "post": {
+              "summary": "Create new product",
+              "requestBody": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "company_id": { "type": "string" },
+                        "product_name": { "type": "string" },
+                        "hs_code": { "type": "string" },
+                        "category": { "type": "string" },
+                        "material": { "type": "string" },
+                        "technical_specs": { "type": "string" },
+                        "unit_price": { "type": "number" },
+                        "currency": { "type": "string" },
+                        "description": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": { "description": "Product created" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "AI Predictions",
+      "description": "AI-powered market forecasting, price trends, and demand predictions using GPT-4",
+      "files": [
+        "apps/web/src/app/api/ai-predictions/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/ai-predictions": {
+            "get": {
+              "summary": "Get AI predictions",
+              "parameters": [
+                {
+                  "name": "company_id",
+                  "in": "query",
+                  "required": true,
+                  "schema": { "type": "string" }
+                },
+                {
+                  "name": "type",
+                  "in": "query",
+                  "schema": { "type": "string", "enum": ["market_forecast", "price_trend", "demand_prediction"] }
+                },
+                {
+                  "name": "period",
+                  "in": "query",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            },
+            "post": {
+              "summary": "Create AI prediction",
+              "requestBody": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": ["company_id", "prediction_type", "period"],
+                      "properties": {
+                        "company_id": { "type": "string" },
+                        "prediction_type": { "type": "string" },
+                        "target_market": { "type": "string" },
+                        "product_category": { "type": "string" },
+                        "hs_code": { "type": "string" },
+                        "period": { "type": "string" },
+                        "market_data": { "type": "object" }
+                      }
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": { "description": "Prediction created" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Market Reports",
+      "description": "Trade statistics and market analysis reports",
+      "files": [
+        "apps/web/src/app/api/market-reports/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/market-reports": {
+            "get": {
+              "summary": "Get market reports",
+              "parameters": [
+                {
+                  "name": "company_id",
+                  "in": "query",
+                  "required": true,
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Target Markets",
+      "description": "Target market identification and analysis",
+      "files": [
+        "apps/web/src/app/api/target-markets/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/target-markets": {
+            "get": {
+              "summary": "Get target markets",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Risk Assessment",
+      "description": "Trade risk analysis and assessment",
+      "files": [
+        "apps/web/src/app/api/risk-assessment/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/risk-assessment": {
+            "get": {
+              "summary": "Get risk assessments",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Price Optimization",
+      "description": "Pricing strategy optimization for export markets",
+      "files": [
+        "apps/web/src/app/api/price-optimization/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/price-optimization": {
+            "get": {
+              "summary": "Get price optimization recommendations",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Trend Detection",
+      "description": "Market trend identification and analysis",
+      "files": [
+        "apps/web/src/app/api/trend-detection/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/trend-detection": {
+            "get": {
+              "summary": "Get market trends",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Product Matching",
+      "description": "Match products with market opportunities",
+      "files": [
+        "apps/web/src/app/api/product-matching/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/product-matching": {
+            "get": {
+              "summary": "Get product matches",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Potential Buyers",
+      "description": "Identify and track potential buyers",
+      "files": [
+        "apps/web/src/app/api/potential-buyers/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/potential-buyers": {
+            "get": {
+              "summary": "Get potential buyers",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GTIP Codes",
+      "description": "Turkish HS code (GTIP) lookup and information",
+      "files": [
+        "apps/web/src/app/api/gtip-codes/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/gtip-codes": {
+            "get": {
+              "summary": "Get GTIP codes",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Campaigns",
+      "description": "Marketing campaign management",
+      "files": [
+        "apps/web/src/app/api/campaigns/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/campaigns": {
+            "get": {
+              "summary": "Get campaigns",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Companies",
+      "description": "Company profile management",
+      "files": [
+        "apps/web/src/app/api/companies/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/companies": {
+            "get": {
+              "summary": "Get company information",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Notifications",
+      "description": "User notification system",
+      "files": [
+        "apps/web/src/app/api/notifications/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/notifications": {
+            "get": {
+              "summary": "Get user notifications",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "User Profile",
+      "description": "User profile management",
+      "files": [
+        "apps/web/src/app/api/profile/route.js"
+      ],
+      "api_doc": {
+        "openapi": "3.0.0",
+        "paths": {
+          "/api/profile": {
+            "get": {
+              "summary": "Get user profile",
+              "responses": {
+                "200": { "description": "Success" }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+
